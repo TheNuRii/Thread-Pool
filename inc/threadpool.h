@@ -1,4 +1,4 @@
-#ifdef THREADPOOL_H
+#ifndef THREADPOOL_H
 #define THREADPOOL_H
 #include <pthread.h>
 
@@ -12,7 +12,7 @@ typedef struct {
 
 typedef struct {
     pthread_mutex_t lock;
-    phread_cond_t notify;
+    pthread_cond_t notify;
     pthread_t threads[MAX_THREADS];
     task_t task_queue[QUEUE_SIZE];
     int queued;
