@@ -1,0 +1,28 @@
+#ifdef THREADPOOL_H
+#define THREADPOOL_H
+#include <pthread.h>
+
+#define MAX_THREADS 8
+#define QUEUE_SIZE 100
+
+typedef struct {
+    void (*fn) (void* arg);
+    void* arg;
+} task_t;
+
+typedef struct {
+    pthread_mutex_t lock;
+    phread_cond_t notify;
+    pthread_t threads[MAX_THREADS];
+    task_t task_queue[QUEUE_SIZE];
+    int queued;
+    int queue_front;
+    int queue_back;
+    int stop;
+} threadpool_t;
+
+void threadpool_init(threadpool_t* pool);
+void threadpool_destroy(threadpool_t* pool);
+void threadpool_add(threadpool_t* pool, void (*function)(void*), void* arg);
+void example_task(void* arg);
+#endif
